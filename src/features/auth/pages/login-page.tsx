@@ -1,8 +1,15 @@
-import { useState } from 'react'
-import { signInWithPopup } from 'firebase/auth'
-import { auth, googleProvider } from '@/lib/firebase'
+import logoSvg from '@/assets/logo.svg'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { auth, googleProvider } from '@/lib/firebase'
+import { signInWithPopup } from 'firebase/auth'
+import { BarChart2, BookOpen, Flame } from 'lucide-react'
+import { useState } from 'react'
+
+const FEATURES = [
+  { icon: BookOpen, label: 'Log sessions by subject and topic' },
+  { icon: Flame, label: 'Build and maintain a daily streak' },
+  { icon: BarChart2, label: 'Visualize progress over time' },
+]
 
 export function LoginPage() {
   const [loading, setLoading] = useState(false)
@@ -21,36 +28,39 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
-      <div className="flex flex-col items-center gap-8 w-full max-w-sm">
-        <div className="flex flex-col items-center gap-2 text-center">
-          <span className="text-4xl font-bold tracking-tight">SquareOne</span>
-          <p className="text-muted-foreground text-sm">
-            Track your interview prep. Build your streak.
-          </p>
+    <div className="min-h-screen flex items-center justify-center bg-background p-6">
+      <div className="w-full max-w-sm flex flex-col gap-10">
+
+        <div className="flex flex-col items-center gap-4 text-center">
+          <img src={logoSvg} alt="SquareOne" className="size-16" />
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">SquareOne</h1>
+            <p className="text-muted-foreground text-sm mt-1">Study tracker</p>
+          </div>
         </div>
 
-        <Card className="w-full">
-          <CardHeader className="text-center pb-4">
-            <CardTitle className="text-lg">Welcome back</CardTitle>
-            <CardDescription>Sign in to continue</CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-3">
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={handleGoogleSignIn}
-              disabled={loading}
-            >
-              {loading ? 'Signing in…' : 'Continue with Google'}
-            </Button>
-            {error && <p className="text-sm text-destructive text-center">{error}</p>}
-          </CardContent>
-        </Card>
+        <ul className="flex flex-col gap-3">
+          {FEATURES.map(({ icon: Icon, label }) => (
+            <li key={label} className="flex items-center gap-3 text-sm text-muted-foreground">
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-md border border-border bg-muted">
+                <Icon className="size-3.5" />
+              </span>
+              {label}
+            </li>
+          ))}
+        </ul>
 
-        <p className="text-sm text-muted-foreground text-center">
-          Your data is private and only visible to you.
-        </p>
+        <div className="flex flex-col gap-3">
+          <Button
+            className="w-full py-6"
+            onClick={handleGoogleSignIn}
+            disabled={loading}
+          >
+            {loading ? 'Signing in…' : 'Continue with Google'}
+          </Button>
+          {error && <p className="text-sm text-destructive text-center">{error}</p>}
+        </div>
+
       </div>
     </div>
   )
