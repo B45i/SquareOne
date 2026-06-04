@@ -1,6 +1,11 @@
 # SquareOne
 
-Interview prep tracker. Log study sessions, track streaks, visualise progress by subject and topic.
+Study tracker. Log sessions, track streaks, visualize progress by subject and topic.
+
+![React](https://img.shields.io/badge/React-20232a?style=flat&logo=react&logoColor=61dafb)
+![TypeScript](https://img.shields.io/badge/TypeScript-20232a?style=flat&logo=typescript&logoColor=3178c6)
+![Firebase](https://img.shields.io/badge/Firebase-20232a?style=flat&logo=firebase&logoColor=ffca28)
+![Vite](https://img.shields.io/badge/Vite-20232a?style=flat&logo=vite&logoColor=646cff)
 
 ---
 
