@@ -86,10 +86,6 @@ export function monthlyStatRef(uid: string, month: string): DocumentReference<Mo
   return doc(db, 'users', uid, 'monthlyStats', month).withConverter(converter<MonthlyStat>())
 }
 
-export function monthlyStatsRef(uid: string): CollectionReference<MonthlyStat> {
-  return collection(db, 'users', uid, 'monthlyStats').withConverter(converter<MonthlyStat>())
-}
-
 export function summaryRef(uid: string): DocumentReference<Summary> {
   return doc(db, 'users', uid, 'stats', 'summary').withConverter(converter<Summary>())
 }

@@ -1,4 +1,4 @@
-import { deleteDoc, doc, getDoc, getDocs, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
+import { deleteDoc, doc, getDocs, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
 import { getUid } from '@/lib/firebase'
 import { subjectRef, subjectsRef } from '@/lib/firebase-refs'
 import type { Subject } from '@/lib/firebase-types'
@@ -18,11 +18,6 @@ interface UpdateSubjectInput {
 export async function getSubjects(): Promise<Subject[]> {
   const snap = await getDocs(subjectsRef(getUid()))
   return snap.docs.map(d => d.data())
-}
-
-export async function getSubject(subjectId: string): Promise<Subject | undefined> {
-  const snap = await getDoc(subjectRef(getUid(), subjectId))
-  return snap.data()
 }
 
 export async function addSubject(input: AddSubjectInput): Promise<string> {

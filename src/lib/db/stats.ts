@@ -7,11 +7,10 @@ import {
   monthlyStatRef,
   subjectStatsRef,
   summaryRef,
-  topicStatsRef,
   weeklyStatRef,
   weeklyStatsRef,
 } from '@/lib/firebase-refs'
-import type { DailyStat, SubjectStat, Summary, TopicStat, WeeklyStat } from '@/lib/firebase-types'
+import type { DailyStat, SubjectStat, Summary } from '@/lib/firebase-types'
 import type { TimePeriod } from '@/lib/time-period'
 import { mondayOf } from '@/lib/session-utils'
 
@@ -35,11 +34,6 @@ export async function getSubjectStats(): Promise<(SubjectStat & { id: string })[
   return snap.docs.map(d => ({ id: d.id, ...d.data() }))
 }
 
-export async function getTopicStats(): Promise<(TopicStat & { id: string })[]> {
-  const snap = await getDocs(topicStatsRef(getUid()))
-  return snap.docs.map(d => ({ id: d.id, ...d.data() }))
-}
-
 export async function getDailyStats(): Promise<DailyStat[]> {
   const startDate = format(subDays(new Date(), 365), 'yyyy-MM-dd')
   const q = query(
@@ -47,12 +41,6 @@ export async function getDailyStats(): Promise<DailyStat[]> {
     where('date', '>=', startDate),
     orderBy('date', 'asc'),
   )
-  const snap = await getDocs(q)
-  return snap.docs.map(d => d.data())
-}
-
-export async function getWeeklyStats(): Promise<WeeklyStat[]> {
-  const q = query(weeklyStatsRef(getUid()), orderBy('weekStart', 'desc'), limit(12))
   const snap = await getDocs(q)
   return snap.docs.map(d => d.data())
 }
