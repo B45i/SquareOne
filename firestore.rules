@@ -1,0 +1,66 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    match /users/{uid}/subjects/{subjectId} {
+      allow read, create: if isOwner(uid);
+      allow update: if isOwner(uid)
+        && request.resource.data.keys().hasOnly(['name', 'color', 'emoji', 'isDefault', 'createdAt', 'id']);
+      allow delete: if isOwner(uid);
+    }
+
+    match /users/{uid}/topics/{topicId} {
+      allow read, create: if isOwner(uid);
+      allow update: if isOwner(uid)
+        && request.resource.data.keys().hasOnly(['name', 'subjectId', 'createdAt', 'id']);
+      allow delete: if isOwner(uid);
+    }
+
+    match /users/{uid}/sessions/{sessionId} {
+      allow read, create: if isOwner(uid);
+      allow update: if isOwner(uid)
+        // durationMinutes must be a positive number if present
+        && (!('durationMinutes' in request.resource.data)
+            || (request.resource.data.durationMinutes is number
+                && request.resource.data.durationMinutes > 0))
+        // type must be a valid enum
+        && request.resource.data.type in ['Learning', 'Practice', 'Revision']
+        // difficulty must be valid if set
+        && (!('difficulty' in request.resource.data)
+            || request.resource.data.difficulty in ['Easy', 'Medium', 'Hard']);
+      allow delete: if isOwner(uid);
+    }
+
+    match /users/{uid}/stats/{document} {
+      allow read, write: if isOwner(uid);
+    }
+
+    match /users/{uid}/subjectStats/{statId} {
+      allow read, write: if isOwner(uid);
+    }
+
+    match /users/{uid}/topicStats/{statId} {
+      allow read, write: if isOwner(uid);
+    }
+
+    match /users/{uid}/dailyStats/{statId} {
+      allow read, write: if isOwner(uid);
+    }
+
+    match /users/{uid}/weeklyStats/{statId} {
+      allow read, write: if isOwner(uid);
+    }
+
+    match /users/{uid}/monthlyStats/{statId} {
+      allow read, write: if isOwner(uid);
+    }
+  }
+}
